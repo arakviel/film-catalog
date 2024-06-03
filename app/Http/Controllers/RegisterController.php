@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserRequest;
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -28,6 +29,9 @@ class RegisterController extends Controller
         $registeredUserArray['password'] = Hash::make($registeredUserArray['password']);
         $user = User::query()->create($registeredUserArray);
         auth()->login($user);
+
+        event(new Registered($user));
+
         return redirect('/profile');
     }
 
