@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GenreController;
+use App\Http\Controllers\MovieController;
+use App\Http\Controllers\MovieFrameController;
 use App\Http\Controllers\RegisterController;
 use App\Mail\OrderShipped;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
@@ -50,3 +52,12 @@ Route::post('/email/verification-notification', function () {
 
     return back()->with('message', 'Verification link sent!');
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+
+Route::get('/movies/create', [MovieController::class, 'create'])->name('movies.create');
+
+Route::post('/movies', [MovieController::class, 'store'])->name('movies.store');
+
+
+Route::resource('movies', MovieController::class);
+Route::resource('movie_frames', MovieFrameController::class);
+Route::resource('genres', GenreController::class);
